@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .dashboard {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        .dashboard h2 {
+            color: #28a745;
+        }
+        .dashboard-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #218838;
+        }
+        .course-list, .assignment-list, .quiz-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .course-list li, .assignment-list li, .quiz-list li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>User Dashboard</h1>
+        <div class="dashboard-section">
+            <h2>Welcome, <span id="username"></span></h2>
+            <p>You have successfully logged in to your account.</p>
+        </div>
+        <div class="dashboard-section">
+            <h2>Account Information</h2>
+            <p><strong>Username:</strong> <span id="username-info"></span></p>
+            <p><strong>Email:</strong> <span id="email-info"></span></p>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>Available Courses</h2>
+            <ul class="course-list" id="course-list">
+                <!-- Courses will be populated here -->
+            </ul>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>Your Assignments</h2>
+            <ul class="assignment-list" id="assignment-list">
+                <!-- Assignments will be populated here -->
+            </ul>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>Your Quizzes</h2>
+            <ul class="quiz-list" id="quiz-list">
+                <!-- Quizzes will be populated here -->
+            </ul>
+        </div>
+
+        <div class="dashboard-section">
+            <h2>Actions</h2>
+            <p><a href="/logout">Logout</a></p> <!-- Link to logout -->
+        </div>
+    </div>
+    <script>
+        // Fetch the username and email from the server
+        fetch('/api/get-user-info')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('username').textContent = data.username;
+                document.getElementById('username-info').textContent = data.username;
+                document.getElementById('email-info').textContent = data.email; // Adding email
+            })
+            .catch(error => console.error('Error fetching user info:', error));
+
+        // Fetch available courses
+        fetch('/get-courses')
+            .then(response => response.json())
+            .then(courses => {
+                const courseList = document.getElementById('course-list');
+                courses.forEach(course => {
+                    const li = document.createElement('li');
+                    li.textContent = course.title;
+                    courseList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching courses:', error));
+
+        // Fetch assignments for the user (assuming userId is known or can be fetched)
+        const userId = 1; // Replace with actual user ID or fetch dynamically
+        fetch(`/api/get-assignments/${userId}`)
+            .then(response => response.json())
+            .then(assignments => {
+                const assignmentList = document.getElementById('assignment-list');
+                assignments.forEach(assignment => {
+                    const li = document.createElement('li');
+                    li.textContent = `${assignment.title} (Due: ${new Date(assignment.due_date).toLocaleDateString()})`;
+                    assignmentList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching assignments:', error));
+
+        // Fetch quizzes for the user (assuming userId is known or can be fetched)
+        fetch(`/api/get-quizzes/${userId}`)
+            .then(response => response.json())
+            .then(quizzes => {
+                const quizList = document.getElementById('quiz-list');
+                quizzes.forEach(quiz => {
+                    const li = document.createElement('li');
+                    li.textContent = quiz.title;
+                    quizList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching quizzes:', error));
+    </script>
+</body>
+</html>

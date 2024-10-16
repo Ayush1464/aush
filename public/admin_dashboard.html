@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <!-- Course Posting Form -->
+    <h2>Post a Course</h2>
+    <form action="/post-course" method="post" enctype="multipart/form-data">
+        <input type="text" name="courseName" placeholder="Course Title" required>
+        
+        <textarea name="courseDescription" placeholder="Course Description" required></textarea>
+        
+        <!-- Input for video upload -->
+        <label for="courseVideo">Upload Course Video:</label>
+        <input type="file" name="courseVideo" id="courseVideo" accept="video/*" required>
+    
+        <!-- Input for PDF upload -->
+        <label for="coursePdf">Upload Course PDF:</label>
+        <input type="file" name="coursePdf" id="coursePdf" accept="application/pdf" required>
+    
+        <button type="submit">Post Course</button>
+    </form>
+    
+    
+
+    <!-- Assignment Posting Form -->
+    <h2>Post an Assignment</h2>
+    <form id="assignmentForm">
+        <select name="course_id" required>
+            <option value="">Select Course</option>
+            <!-- Course options will be populated by JavaScript -->
+        </select>
+        <input type="text" name="title" placeholder="Assignment Title" required>
+        <textarea name="description" placeholder="Assignment Description" required></textarea>
+        <input type="datetime-local" name="due_date" required>
+        <button type="submit">Post Assignment</button>
+    </form>
+
+    <!-- Quiz Posting Form -->
+    <h2>Post a Quiz</h2>
+    <form id="quizForm">
+        <select name="course_id" required>
+            <option value="">Select Course</option>
+            <!-- Course options will be populated by JavaScript -->
+        </select>
+        <input type="text" name="title" placeholder="Quiz Title" required>
+        <textarea name="questions" placeholder='{"question1": "Answer1", "question2": "Answer2"}' required></textarea>
+        <button type="submit">Post Quiz</button>
+    </form>
+
+
+</body>
+</html>
